@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -36,20 +37,32 @@ export default function Dashboard() {
           </p>
         </div>
 
+        {/* Loading State */}
         {loading && (
-          <div className="bg-white p-8 rounded-2xl shadow-lg">
-            <p className="text-gray-500">Calculating your health metrics...</p>
+          <div className="bg-white rounded-2xl shadow-lg mb-6">
+            <LoadingSpinner text="Calculating your health metrics..." />
           </div>
         )}
 
-        {error && (
-          <div className="bg-red-50 text-red-700 px-4 py-3 rounded-lg mb-6">
-            {error}
+        {/* Error State */}
+        {error && !loading && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-4 rounded-2xl mb-6 flex items-start gap-3">
+            <span className="text-2xl">⚠️</span>
+            <div className="flex-1">
+              <p className="font-semibold">Couldn't load your health data</p>
+              <p className="text-sm mt-1">{error}</p>
+              <button
+                onClick={() => window.location.reload()}
+                className="mt-3 text-sm bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700"
+              >
+                Retry
+              </button>
+            </div>
           </div>
         )}
 
         {/* BMI Card */}
-        {bmi && (
+        {bmi && !loading && (
           <div className="bg-white p-8 rounded-2xl shadow-lg mb-6">
             <h2 className="text-xl font-bold text-gray-800 mb-4">
               📊 Body Mass Index (BMI)
@@ -94,7 +107,7 @@ export default function Dashboard() {
         )}
 
         {/* Calorie Card */}
-        {calories && (
+        {calories && !loading && (
           <div className="bg-white p-8 rounded-2xl shadow-lg mb-6">
             <h2 className="text-xl font-bold text-gray-800 mb-4">
               🔥 Daily Calorie Needs
@@ -163,29 +176,31 @@ export default function Dashboard() {
         )}
 
         {/* WHO Reference Table */}
-        <div className="bg-white p-6 rounded-2xl shadow-lg">
-          <h3 className="text-sm font-semibold text-gray-500 uppercase mb-3">
-            WHO BMI Classification
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
-            <div className="bg-blue-50 p-3 rounded-lg">
-              <div className="font-bold text-blue-700">Underweight</div>
-              <div className="text-gray-600">&lt; 18.5</div>
-            </div>
-            <div className="bg-green-50 p-3 rounded-lg">
-              <div className="font-bold text-green-700">Normal</div>
-              <div className="text-gray-600">18.5 – 24.9</div>
-            </div>
-            <div className="bg-yellow-50 p-3 rounded-lg">
-              <div className="font-bold text-yellow-700">Overweight</div>
-              <div className="text-gray-600">25 – 29.9</div>
-            </div>
-            <div className="bg-red-50 p-3 rounded-lg">
-              <div className="font-bold text-red-700">Obese</div>
-              <div className="text-gray-600">≥ 30</div>
+        {!loading && (
+          <div className="bg-white p-6 rounded-2xl shadow-lg">
+            <h3 className="text-sm font-semibold text-gray-500 uppercase mb-3">
+              WHO BMI Classification
+            </h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+              <div className="bg-blue-50 p-3 rounded-lg">
+                <div className="font-bold text-blue-700">Underweight</div>
+                <div className="text-gray-600">&lt; 18.5</div>
+              </div>
+              <div className="bg-green-50 p-3 rounded-lg">
+                <div className="font-bold text-green-700">Normal</div>
+                <div className="text-gray-600">18.5 – 24.9</div>
+              </div>
+              <div className="bg-yellow-50 p-3 rounded-lg">
+                <div className="font-bold text-yellow-700">Overweight</div>
+                <div className="text-gray-600">25 – 29.9</div>
+              </div>
+              <div className="bg-red-50 p-3 rounded-lg">
+                <div className="font-bold text-red-700">Obese</div>
+                <div className="text-gray-600">≥ 30</div>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
