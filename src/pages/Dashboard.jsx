@@ -5,17 +5,18 @@ import api from "../services/api";
 export default function Dashboard() {
   const { user } = useAuth();
   const [bmi, setBmi] = useState(null);
+  const [calories, setCalories] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    api
-      .get("/health/bmi")
-      .then((res) => {
-        setBmi(res.data);
+    Promise.all([api.get("/health/bmi"), api.get("/health/calories")])
+      .then(([bmiRes, calRes]) => {
+        setBmi(bmiRes.data);
+        setCalories(calRes.data);
       })
       .catch((err) => {
-        setError(err.response?.data?.message || "Could not load BMI");
+        setError(err.response?.data?.message || "Could not load health data");
       })
       .finally(() => {
         setLoading(false);
@@ -25,7 +26,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-4xl mx-auto">
-        {/* Welcome */}
+        {/* Welcome Card */}
         <div className="bg-white p-8 rounded-2xl shadow-lg mb-6">
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
             Welcome, {user?.name}! 👋
@@ -35,21 +36,24 @@ export default function Dashboard() {
           </p>
         </div>
 
+        {loading && (
+          <div className="bg-white p-8 rounded-2xl shadow-lg">
+            <p className="text-gray-500">Calculating your health metrics...</p>
+          </div>
+        )}
+
+        {error && (
+          <div className="bg-red-50 text-red-700 px-4 py-3 rounded-lg mb-6">
+            {error}
+          </div>
+        )}
+
         {/* BMI Card */}
-        <div className="bg-white p-8 rounded-2xl shadow-lg mb-6">
-          <h2 className="text-xl font-bold text-gray-800 mb-4">
-            📊 Body Mass Index (BMI)
-          </h2>
-
-          {loading && <p className="text-gray-500">Calculating your BMI...</p>}
-
-          {error && (
-            <div className="bg-red-50 text-red-700 px-4 py-3 rounded-lg">
-              {error}
-            </div>
-          )}
-
-          {bmi && (
+        {bmi && (
+          <div className="bg-white p-8 rounded-2xl shadow-lg mb-6">
+            <h2 className="text-xl font-bold text-gray-800 mb-4">
+              📊 Body Mass Index (BMI)
+            </h2>
             <div className="flex flex-col md:flex-row items-center gap-6">
               <div
                 className="w-40 h-40 rounded-full flex items-center justify-center text-white"
@@ -62,7 +66,6 @@ export default function Dashboard() {
                   </div>
                 </div>
               </div>
-
               <div className="flex-1 text-center md:text-left">
                 <div
                   className="inline-block px-3 py-1 rounded-full text-sm font-semibold mb-3"
@@ -87,8 +90,77 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
+
+        {/* Calorie Card */}
+        {calories && (
+          <div className="bg-white p-8 rounded-2xl shadow-lg mb-6">
+            <h2 className="text-xl font-bold text-gray-800 mb-4">
+              🔥 Daily Calorie Needs
+            </h2>
+
+            <div className="bg-orange-50 p-6 rounded-xl mb-4 text-center">
+              <div className="text-5xl font-bold text-orange-600">
+                {calories.dailyCalories}
+              </div>
+              <div className="text-sm text-gray-600 mt-1">kcal / day</div>
+              <div className="text-xs text-gray-500 mt-2">
+                Activity: {calories.activityLabel}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 mb-4">
+              <div className="bg-gray-50 p-3 rounded-lg">
+                <div className="text-xs text-gray-500 uppercase">BMR</div>
+                <div className="text-lg font-bold text-gray-800">
+                  {calories.bmr} kcal
+                </div>
+                <div className="text-xs text-gray-500">at rest</div>
+              </div>
+              <div className="bg-gray-50 p-3 rounded-lg">
+                <div className="text-xs text-gray-500 uppercase">
+                  Multiplier
+                </div>
+                <div className="text-lg font-bold text-gray-800">
+                  × {calories.multiplier}
+                </div>
+                <div className="text-xs text-gray-500">activity factor</div>
+              </div>
+            </div>
+
+            <h3 className="text-sm font-semibold text-gray-500 uppercase mb-3">
+              Recommended Macro Split
+            </h3>
+            <div className="grid grid-cols-3 gap-3 text-center">
+              <div className="bg-blue-50 p-3 rounded-lg">
+                <div className="text-2xl font-bold text-blue-700">
+                  {calories.macroSplit.protein}g
+                </div>
+                <div className="text-xs text-gray-600">Protein</div>
+                <div className="text-xs text-gray-400">30%</div>
+              </div>
+              <div className="bg-green-50 p-3 rounded-lg">
+                <div className="text-2xl font-bold text-green-700">
+                  {calories.macroSplit.carbs}g
+                </div>
+                <div className="text-xs text-gray-600">Carbs</div>
+                <div className="text-xs text-gray-400">40%</div>
+              </div>
+              <div className="bg-yellow-50 p-3 rounded-lg">
+                <div className="text-2xl font-bold text-yellow-700">
+                  {calories.macroSplit.fat}g
+                </div>
+                <div className="text-xs text-gray-600">Fat</div>
+                <div className="text-xs text-gray-400">30%</div>
+              </div>
+            </div>
+
+            <p className="text-xs text-gray-400 mt-4 text-center">
+              Based on Mifflin-St Jeor equation + activity multiplier
+            </p>
+          </div>
+        )}
 
         {/* WHO Reference Table */}
         <div className="bg-white p-6 rounded-2xl shadow-lg">
