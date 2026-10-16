@@ -1,48 +1,117 @@
+import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
+import api from "../services/api";
 
 export default function Dashboard() {
   const { user } = useAuth();
+  const [bmi, setBmi] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    api
+      .get("/health/bmi")
+      .then((res) => {
+        setBmi(res.data);
+      })
+      .catch((err) => {
+        setError(err.response?.data?.message || "Could not load BMI");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-4xl mx-auto">
-        <div className="bg-white p-8 rounded-2xl shadow-lg">
+        {/* Welcome */}
+        <div className="bg-white p-8 rounded-2xl shadow-lg mb-6">
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
             Welcome, {user?.name}! 👋
           </h1>
-          <p className="text-gray-500 mb-6">
-            This is your health dashboard. Features coming in the next days.
+          <p className="text-gray-500">
+            Here's your health snapshot for today.
           </p>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            <div className="bg-green-50 p-4 rounded-lg">
-              <p className="text-sm text-gray-600">Age</p>
-              <p className="text-2xl font-bold text-gray-800">{user?.age}</p>
-            </div>
-            <div className="bg-blue-50 p-4 rounded-lg">
-              <p className="text-sm text-gray-600">Height</p>
-              <p className="text-2xl font-bold text-gray-800">
-                {user?.height} cm
-              </p>
-            </div>
-            <div className="bg-yellow-50 p-4 rounded-lg">
-              <p className="text-sm text-gray-600">Weight</p>
-              <p className="text-2xl font-bold text-gray-800">
-                {user?.currentWeight} kg
-              </p>
-            </div>
-          </div>
+        {/* BMI Card */}
+        <div className="bg-white p-8 rounded-2xl shadow-lg mb-6">
+          <h2 className="text-xl font-bold text-gray-800 mb-4">
+            📊 Body Mass Index (BMI)
+          </h2>
 
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <p className="text-sm text-gray-600 mb-2">Coming soon:</p>
-            <ul className="text-sm text-gray-700 space-y-1">
-              <li>📊 BMI Calculator</li>
-              <li>🍎 Daily Calorie Target</li>
-              <li>🍽️ Meal Logging</li>
-              <li>💧 Water Intake Tracking</li>
-              <li>⚖️ Weight Tracking</li>
-              <li>📈 Progress Charts</li>
-            </ul>
+          {loading && <p className="text-gray-500">Calculating your BMI...</p>}
+
+          {error && (
+            <div className="bg-red-50 text-red-700 px-4 py-3 rounded-lg">
+              {error}
+            </div>
+          )}
+
+          {bmi && (
+            <div className="flex flex-col md:flex-row items-center gap-6">
+              <div
+                className="w-40 h-40 rounded-full flex items-center justify-center text-white"
+                style={{ backgroundColor: bmi.color }}
+              >
+                <div className="text-center">
+                  <div className="text-4xl font-bold">{bmi.bmi}</div>
+                  <div className="text-xs uppercase tracking-wider mt-1">
+                    BMI
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex-1 text-center md:text-left">
+                <div
+                  className="inline-block px-3 py-1 rounded-full text-sm font-semibold mb-3"
+                  style={{
+                    backgroundColor: `${bmi.color}20`,
+                    color: bmi.color,
+                  }}
+                >
+                  {bmi.category}
+                </div>
+                <p className="text-gray-700 mb-3">{bmi.message}</p>
+                <div className="text-sm text-gray-500 space-y-1">
+                  <div>
+                    <strong>Weight:</strong> {bmi.weight} kg
+                  </div>
+                  <div>
+                    <strong>Height:</strong> {bmi.height} cm
+                  </div>
+                  <div>
+                    <strong>Healthy BMI range:</strong> {bmi.range}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* WHO Reference Table */}
+        <div className="bg-white p-6 rounded-2xl shadow-lg">
+          <h3 className="text-sm font-semibold text-gray-500 uppercase mb-3">
+            WHO BMI Classification
+          </h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+            <div className="bg-blue-50 p-3 rounded-lg">
+              <div className="font-bold text-blue-700">Underweight</div>
+              <div className="text-gray-600">&lt; 18.5</div>
+            </div>
+            <div className="bg-green-50 p-3 rounded-lg">
+              <div className="font-bold text-green-700">Normal</div>
+              <div className="text-gray-600">18.5 – 24.9</div>
+            </div>
+            <div className="bg-yellow-50 p-3 rounded-lg">
+              <div className="font-bold text-yellow-700">Overweight</div>
+              <div className="text-gray-600">25 – 29.9</div>
+            </div>
+            <div className="bg-red-50 p-3 rounded-lg">
+              <div className="font-bold text-red-700">Obese</div>
+              <div className="text-gray-600">≥ 30</div>
+            </div>
           </div>
         </div>
       </div>
