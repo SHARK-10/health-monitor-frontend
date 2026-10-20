@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
 import LoadingSpinner from "../components/LoadingSpinner";
+import WaterCard from "../components/WaterCard";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -174,6 +175,9 @@ export default function Dashboard() {
             </p>
           </div>
         )}
+
+        {/* Water Tracking Card */}
+        {!loading && <WaterCard />}
 
         {/* WHO Reference Table */}
         {!loading && (
