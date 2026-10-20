@@ -6,6 +6,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
+import Meals from "./pages/Meals";
 
 function HomeRedirect() {
   return <Navigate to="/register" replace />;
@@ -20,6 +21,7 @@ function App() {
           <Route path="/" element={<HomeRedirect />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+
           <Route
             path="/dashboard"
             element={
@@ -28,6 +30,16 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          <Route
+            path="/meals"
+            element={
+              <ProtectedRoute>
+                <Meals />
+              </ProtectedRoute>
+            }
+          />
+
           <Route
             path="/profile"
             element={

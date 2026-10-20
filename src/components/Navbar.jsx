@@ -23,18 +23,28 @@ export default function Navbar() {
               <span className="text-gray-700 hidden sm:inline">
                 Hi, {user.name}
               </span>
+
               <Link
                 to="/dashboard"
                 className="text-gray-700 hover:text-primary font-medium"
               >
                 Dashboard
               </Link>
+
+              <Link
+                to="/meals"
+                className="text-gray-700 hover:text-primary font-medium"
+              >
+                Meals
+              </Link>
+
               <Link
                 to="/profile"
                 className="text-gray-700 hover:text-primary font-medium"
               >
                 Profile
               </Link>
+
               <button
                 onClick={handleLogout}
                 className="bg-danger text-white px-4 py-2 rounded-lg hover:bg-red-600 font-medium"
