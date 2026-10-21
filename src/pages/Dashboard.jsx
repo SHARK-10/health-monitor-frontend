@@ -3,6 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
 import LoadingSpinner from "../components/LoadingSpinner";
 import WaterCard from "../components/WaterCard";
+import WeightCard from "../components/WeightCard";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -178,6 +179,9 @@ export default function Dashboard() {
 
         {/* Water Tracking Card */}
         {!loading && <WaterCard />}
+
+        {/* Weight Tracking Card */}
+        {!loading && <WeightCard />}
 
         {/* WHO Reference Table */}
         {!loading && (
