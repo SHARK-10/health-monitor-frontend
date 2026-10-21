@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
 
@@ -16,8 +17,6 @@ export default function Profile() {
     activityLevel: user?.activityLevel || "moderate",
   });
 
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -26,8 +25,6 @@ export default function Profile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
     setLoading(true);
 
     try {
@@ -39,10 +36,10 @@ export default function Profile() {
       });
 
       updateUser(res.data);
-      setSuccess("Profile updated successfully!");
+      toast.success("Profile updated successfully!");
       setTimeout(() => navigate("/dashboard"), 1000);
     } catch (err) {
-      setError(err.response?.data?.message || "Update failed");
+      toast.error(err.response?.data?.message || "Update failed");
     } finally {
       setLoading(false);
     }
@@ -59,18 +56,6 @@ export default function Profile() {
             Update your health information. Dashboard recalculates
             automatically.
           </p>
-
-          {error && (
-            <div className="bg-red-50 text-red-700 px-4 py-3 rounded-lg mb-4 text-sm">
-              {error}
-            </div>
-          )}
-
-          {success && (
-            <div className="bg-green-50 text-green-700 px-4 py-3 rounded-lg mb-4 text-sm">
-              {success}
-            </div>
-          )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>

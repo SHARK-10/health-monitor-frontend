@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import api from "../services/api";
 
 export default function WeightCard() {
@@ -8,7 +9,6 @@ export default function WeightCard() {
   const [showForm, setShowForm] = useState(false);
   const [newWeight, setNewWeight] = useState("");
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState("");
 
   useEffect(() => {
     loadData();
@@ -31,21 +31,21 @@ export default function WeightCard() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
     const w = parseFloat(newWeight);
     if (!w || w < 20 || w > 500) {
-      setError("Weight must be between 20 and 500 kg");
+      toast.error("Weight must be between 20 and 500 kg");
       return;
     }
 
     setSaving(true);
     try {
       await api.post("/weight", { weight: w });
+      toast.success("Weight saved!");
       setNewWeight("");
       setShowForm(false);
       await loadData();
     } catch (err) {
-      setError(err.response?.data?.message || "Could not save weight");
+      toast.error(err.response?.data?.message || "Could not save weight");
     } finally {
       setSaving(false);
     }
@@ -134,9 +134,6 @@ export default function WeightCard() {
                   {saving ? "Saving..." : "Save"}
                 </button>
               </div>
-              {error && (
-                <div className="text-red-600 text-sm mt-2">{error}</div>
-              )}
             </form>
           )}
 

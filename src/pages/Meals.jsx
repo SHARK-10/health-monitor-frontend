@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
 import LoadingSpinner from "../components/LoadingSpinner";
@@ -88,13 +89,14 @@ export default function Meals() {
         carbs: food.carbs,
         fat: food.fat,
       });
+      toast.success("Meal logged!");
       // Refresh today's meals
       await loadTodayMeals();
       // Clear search results
       setSearchResults([]);
       setQuery("");
     } catch (err) {
-      alert(err.response?.data?.message || "Could not log meal");
+      toast.error(err.response?.data?.message || "Could not log meal");
     }
   };
 
@@ -102,9 +104,10 @@ export default function Meals() {
     if (!confirm("Delete this meal?")) return;
     try {
       await api.delete(`/meals/${mealId}`);
+      toast.success("Meal deleted");
       await loadTodayMeals();
     } catch (err) {
-      alert(err.response?.data?.message || "Could not delete meal");
+      toast.error(err.response?.data?.message || "Could not delete meal");
     }
   };
 
