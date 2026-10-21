@@ -4,6 +4,7 @@ import api from "../services/api";
 import LoadingSpinner from "../components/LoadingSpinner";
 import WaterCard from "../components/WaterCard";
 import WeightCard from "../components/WeightCard";
+import ProgressCharts from "../components/ProgressCharts";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -182,6 +183,9 @@ export default function Dashboard() {
 
         {/* Weight Tracking Card */}
         {!loading && <WeightCard />}
+
+        {/* Progress Charts */}
+        {!loading && <ProgressCharts />}
 
         {/* WHO Reference Table */}
         {!loading && (
