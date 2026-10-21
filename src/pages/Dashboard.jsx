@@ -4,6 +4,7 @@ import api from "../services/api";
 import LoadingSpinner from "../components/LoadingSpinner";
 import WaterCard from "../components/WaterCard";
 import WeightCard from "../components/WeightCard";
+import GoalCard from "../components/GoalCard";
 import ProgressCharts from "../components/ProgressCharts";
 
 export default function Dashboard() {
@@ -183,6 +184,9 @@ export default function Dashboard() {
 
         {/* Weight Tracking Card */}
         {!loading && <WeightCard />}
+
+        {/* Goal Tracking Card */}
+        {!loading && <GoalCard />}
 
         {/* Progress Charts */}
         {!loading && <ProgressCharts />}
