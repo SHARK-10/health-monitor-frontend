@@ -5,6 +5,7 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import WaterCard from "../components/WaterCard";
 import WeightCard from "../components/WeightCard";
 import GoalCard from "../components/GoalCard";
+import DietPlanCard from "../components/DietPlanCard";
 import ProgressCharts from "../components/ProgressCharts";
 
 export default function Dashboard() {
@@ -187,6 +188,9 @@ export default function Dashboard() {
 
         {/* Goal Tracking Card */}
         {!loading && <GoalCard />}
+
+        {/* Diet Plan Card */}
+        {!loading && <DietPlanCard />}
 
         {/* Progress Charts */}
         {!loading && <ProgressCharts />}
