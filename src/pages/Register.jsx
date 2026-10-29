@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate, Navigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
 
 export default function Register() {
@@ -13,7 +14,6 @@ export default function Register() {
     currentWeight: "",
     activityLevel: "moderate",
   });
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const { user, register } = useAuth();
@@ -29,7 +29,6 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
     setLoading(true);
 
     try {
@@ -39,33 +38,35 @@ export default function Register() {
         height: Number(formData.height),
         currentWeight: Number(formData.currentWeight),
       });
+      toast.success("Account created successfully!");
       navigate("/dashboard");
     } catch (err) {
-      setError(err.response?.data?.message || "Registration failed");
+      toast.error(err.response?.data?.message || "Registration failed");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-blue-50 p-4">
-      <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
-        <h1 className="text-3xl font-bold text-center text-gray-800 mb-2">
-          Create Account
-        </h1>
-        <p className="text-center text-gray-500 mb-6">
-          Start your health journey
-        </p>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black p-4 relative overflow-hidden py-12">
+      <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-gray-700 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-float"></div>
+      <div
+        className="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-gray-600 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-float"
+        style={{ animationDelay: "1.5s" }}
+      ></div>
 
-        {error && (
-          <div className="bg-red-50 text-red-700 px-4 py-3 rounded-lg mb-4 text-sm">
-            {error}
-          </div>
-        )}
+      <div className="bg-gray-800/80 backdrop-blur-lg p-8 rounded-3xl shadow-2xl w-full max-w-md border border-gray-700 relative z-10 animate-fade-in-up">
+        <div className="text-center mb-8">
+          <div className="text-5xl mb-3 animate-float">🏥</div>
+          <h1 className="text-3xl font-extrabold text-white">Create Account</h1>
+          <p className="text-gray-400 mt-2 text-sm">
+            Start your health journey today
+          </p>
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-gray-300 mb-1">
               Full Name
             </label>
             <input
@@ -74,13 +75,13 @@ export default function Register() {
               value={formData.name}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none"
+              className="w-full px-4 py-2 border border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-gray-900/50 text-white placeholder-gray-500 focus:bg-gray-900"
               placeholder="John Doe"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-gray-300 mb-1">
               Email
             </label>
             <input
@@ -89,13 +90,13 @@ export default function Register() {
               value={formData.email}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none"
+              className="w-full px-4 py-2 border border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-gray-900/50 text-white placeholder-gray-500 focus:bg-gray-900"
               placeholder="you@example.com"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-gray-300 mb-1">
               Password
             </label>
             <input
@@ -105,14 +106,14 @@ export default function Register() {
               onChange={handleChange}
               required
               minLength={6}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none"
+              className="w-full px-4 py-2 border border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-gray-900/50 text-white placeholder-gray-500 focus:bg-gray-900"
               placeholder="At least 6 characters"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-semibold text-gray-300 mb-1">
                 Age
               </label>
               <input
@@ -121,18 +122,18 @@ export default function Register() {
                 value={formData.age}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none"
+                className="w-full px-4 py-2 border border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-gray-900/50 text-white placeholder-gray-500 focus:bg-gray-900"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-semibold text-gray-300 mb-1">
                 Gender
               </label>
               <select
                 name="gender"
                 value={formData.gender}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none bg-white"
+                className="w-full px-4 py-2 border border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-gray-900/50 text-white"
               >
                 <option value="male">Male</option>
                 <option value="female">Female</option>
@@ -143,7 +144,7 @@ export default function Register() {
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-semibold text-gray-300 mb-1">
                 Height (cm)
               </label>
               <input
@@ -152,11 +153,11 @@ export default function Register() {
                 value={formData.height}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none"
+                className="w-full px-4 py-2 border border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-gray-900/50 text-white placeholder-gray-500 focus:bg-gray-900"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-semibold text-gray-300 mb-1">
                 Weight (kg)
               </label>
               <input
@@ -165,20 +166,20 @@ export default function Register() {
                 value={formData.currentWeight}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none"
+                className="w-full px-4 py-2 border border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-gray-900/50 text-white placeholder-gray-500 focus:bg-gray-900"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-gray-300 mb-1">
               Activity Level
             </label>
             <select
               name="activityLevel"
               value={formData.activityLevel}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none bg-white"
+              className="w-full px-4 py-2 border border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-gray-900/50 text-white"
             >
               <option value="sedentary">Sedentary (little exercise)</option>
               <option value="light">Light (1-3 days/week)</option>
@@ -191,19 +192,16 @@ export default function Register() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-green-600 transition disabled:opacity-50"
+            className="w-full bg-primary text-gray-900 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:transform-none mt-2"
           >
             {loading ? "Creating account..." : "Create Account"}
           </button>
         </form>
 
-        <p className="text-center text-gray-600 mt-6 text-sm">
+        <p className="text-center text-gray-400 mt-6 text-sm">
           Already have an account?{" "}
-          <Link
-            to="/login"
-            className="text-primary font-medium hover:underline"
-          >
-            Login
+          <Link to="/login" className="text-primary font-bold hover:underline">
+            Login here
           </Link>
         </p>
       </div>

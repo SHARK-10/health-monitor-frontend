@@ -46,20 +46,20 @@ export default function Profile() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black p-6">
       <div className="max-w-2xl mx-auto">
-        <div className="bg-white p-8 rounded-2xl shadow-lg">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+        <div className="bg-gray-800/80 backdrop-blur-sm p-8 rounded-3xl shadow-lg border border-gray-700 animate-fade-in-up">
+          <h1 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-400 mb-2 flex items-center gap-2">
             👤 My Profile
           </h1>
-          <p className="text-gray-500 mb-6">
+          <p className="text-gray-400 mb-8">
             Update your health information. Dashboard recalculates
             automatically.
           </p>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-semibold text-gray-300 mb-2">
                 Full Name
               </label>
               <input
@@ -68,25 +68,25 @@ export default function Profile() {
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none"
+                className="w-full px-4 py-3 border border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-gray-900/50 text-white focus:bg-gray-900"
               />
             </div>
 
-            <div className="bg-gray-50 p-3 rounded-lg">
-              <label className="block text-sm font-medium text-gray-500 mb-1">
+            <div className="bg-gray-900/50 p-4 rounded-xl border border-gray-700">
+              <label className="block text-xs font-bold text-gray-500 uppercase mb-1">
                 Email (cannot be changed)
               </label>
               <input
                 type="email"
                 value={user?.email || ""}
                 disabled
-                className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-100 text-gray-500 cursor-not-allowed"
+                className="w-full px-0 py-1 bg-transparent text-gray-400 font-medium cursor-not-allowed outline-none"
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-semibold text-gray-300 mb-2">
                   Age
                 </label>
                 <input
@@ -95,18 +95,18 @@ export default function Profile() {
                   value={formData.age}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none"
+                  className="w-full px-4 py-3 border border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-gray-900/50 text-white focus:bg-gray-900"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-semibold text-gray-300 mb-2">
                   Gender
                 </label>
                 <select
                   name="gender"
                   value={formData.gender}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none bg-white"
+                  className="w-full px-4 py-3 border border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-gray-900/50 text-white"
                 >
                   <option value="male">Male</option>
                   <option value="female">Female</option>
@@ -115,9 +115,9 @@ export default function Profile() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-semibold text-gray-300 mb-2">
                   Height (cm)
                 </label>
                 <input
@@ -126,11 +126,11 @@ export default function Profile() {
                   value={formData.height}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none"
+                  className="w-full px-4 py-3 border border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-gray-900/50 text-white focus:bg-gray-900"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-semibold text-gray-300 mb-2">
                   Weight (kg)
                 </label>
                 <input
@@ -139,20 +139,20 @@ export default function Profile() {
                   value={formData.currentWeight}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none"
+                  className="w-full px-4 py-3 border border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-gray-900/50 text-white focus:bg-gray-900"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-semibold text-gray-300 mb-2">
                 Activity Level
               </label>
               <select
                 name="activityLevel"
                 value={formData.activityLevel}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none bg-white"
+                className="w-full px-4 py-3 border border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-gray-900/50 text-white"
               >
                 <option value="sedentary">Sedentary (little exercise)</option>
                 <option value="light">Light (1-3 days/week)</option>
@@ -165,10 +165,10 @@ export default function Profile() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-green-600 transition disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full bg-primary text-gray-900 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:transform-none flex items-center justify-center gap-2 mt-4"
             >
               {loading && (
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-900"></div>
               )}
               {loading ? "Saving..." : "Save Changes"}
             </button>
